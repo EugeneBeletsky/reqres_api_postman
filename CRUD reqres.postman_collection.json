@@ -1,0 +1,721 @@
+{
+	"info": {
+		"_postman_id": "fa2339f3-cfb6-416c-951c-caf5653499c7",
+		"name": "reqres CRUD API tests",
+		"description": "This collection represent CRUD requests for [Reqres - A hosted REST-API ready to respond to your AJAX requests](https://reqres.in/)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20796961",
+		"_collection_link": "https://blue-astronaut-774241.postman.co/workspace/ea9a4f3f-5299-4892-8c5b-e75124213386/collection/20796961-fa2339f3-cfb6-416c-951c-caf5653499c7?action=share&source=collection_link&creator=20796961"
+	},
+	"item": [
+		{
+			"name": "getUsers",
+			"item": [
+				{
+					"name": "getUsers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response have page property\", function () {\r",
+									"    let response = pm.response.json();\r",
+									"    pm.expect(response).to.haveOwnProperty(\"page\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response page value equals 2\", function () {\r",
+									"    let response = pm.response.json();\r",
+									"    pm.expect(response.page).to.eql(2);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users?page=2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getSingleUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response have id property\", function () {\r",
+									"    let response = pm.response.json();\r",
+									"    pm.expect(response.data).to.haveOwnProperty(\"id\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response id value equals 2\", function () {\r",
+									"    let response = pm.response.json();\r",
+									"    pm.expect(response.data.id).to.eql(2);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "userNotFound",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response to be empty object\", function () {\r",
+									"    let response = pm.response.json();\r",
+									"    pm.expect(response).to.be.an('object').that.is.empty;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/23",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"23"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "GET requests for get users"
+		},
+		{
+			"name": "creatreUser",
+			"item": [
+				{
+					"name": "createUser",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"name\", pm.variables.replaceIn(\"{{$randomFirstName}}\"));\r",
+									"pm.variables.set(\"job\", pm.variables.replaceIn(\"{{$randomJobArea}}\"));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Name is correct\", function () {\r",
+									"    let response = pm.response.json();\r",
+									"    pm.expect(response.name).to.eql(pm.variables.get(\"name\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Job is correct\", function () {\r",
+									"    let response = pm.response.json();\r",
+									"    pm.expect(response.job).to.eql(pm.variables.get(\"job\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Save ID\", function () {\r",
+									"    let response = pm.response.json();\r",
+									"    pm.environment.set(\"id\", response.id);\r",
+									"    console.log(\"Saved ID:\", response.id);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"job\": \"{{job}}\" \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "POST request for create user."
+		},
+		{
+			"name": "updateUser",
+			"item": [
+				{
+					"name": "updateUser",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"name\", pm.variables.replaceIn(\"{{$randomFirstName}}\"));\r",
+									"pm.variables.set(\"job\", pm.variables.replaceIn(\"{{$randomJobArea}}\"));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Name is correct\", function () {\r",
+									"    let response = pm.response.json();\r",
+									"    pm.expect(response.name).to.eql(pm.variables.get(\"name\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Job is correct\", function () {\r",
+									"    let response = pm.response.json();\r",
+									"    pm.expect(response.job).to.eql(pm.variables.get(\"job\"));\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"job\": \"{{job}}\" \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateUser2",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"name\", pm.variables.replaceIn(\"{{$randomFirstName}}\"));\r",
+									"pm.variables.set(\"job\", pm.variables.replaceIn(\"{{$randomJobArea}}\"));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Job is correct\", function () {\r",
+									"    let response = pm.response.json();\r",
+									"    pm.expect(response.job).to.eql(pm.variables.get(\"job\"));\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{    \r\n    \"job\": \"{{job}}\" \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "PUT and Patch requests for update user info."
+		},
+		{
+			"name": "deleteUser",
+			"item": [
+				{
+					"name": "deleteUser",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"name\", pm.variables.replaceIn(\"{{$randomFirstName}}\"));\r",
+									"pm.variables.set(\"job\", pm.variables.replaceIn(\"{{$randomJobArea}}\"));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "DELETE request for delete user."
+		},
+		{
+			"name": "login",
+			"item": [
+				{
+					"name": "login 200",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response have token\", function () {\r",
+									"    let response = pm.response.json();\r",
+									"    pm.expect(response).to.haveOwnProperty(\"token\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Save token\", function () {\r",
+									"    let response = pm.response.json();\r",
+									"    pm.environment.set(\"token\", response.token);\r",
+									"    console.log(\"Saved token:\", response.token);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"cityslicka\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login 400",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response have error\", function () {\r",
+									"    let response = pm.response.json();\r",
+									"    pm.expect(response).to.haveOwnProperty(\"error\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check error message\", function () {\r",
+									"    var response = pm.response.json();\r",
+									"    pm.expect(response.error).to.eql(\"Missing password\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"peter@klaven\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "POST requests for success/unsuccess login."
+		},
+		{
+			"name": "register",
+			"item": [
+				{
+					"name": "register 200",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"username\", pm.variables.replaceIn(\"{{$randomUserName}}\"));\r",
+									"pm.variables.set(\"email\", pm.variables.replaceIn(\"{{$randomEmail}}\"));\r",
+									"pm.variables.set(\"pass\", pm.variables.replaceIn(\"{{$randomPassword}}\"));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response have id\", function () {\r",
+									"    let response = pm.response.json();\r",
+									"    pm.expect(response).to.haveOwnProperty(\"id\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response have token\", function () {\r",
+									"    let response = pm.response.json();\r",
+									"    pm.expect(response).to.haveOwnProperty(\"token\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Save ID\", function () {\r",
+									"    let response = pm.response.json();\r",
+									"    pm.environment.set(\"id\", response.id);\r",
+									"    console.log(\"Saved ID:\", response.id);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Save token\", function () {\r",
+									"    let response = pm.response.json();\r",
+									"    pm.environment.set(\"token\", response.token);\r",
+									"    console.log(\"Saved token:\", response.token);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"pistol\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register 400",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response have error\", function () {\r",
+									"    let response = pm.response.json();\r",
+									"    pm.expect(response).to.haveOwnProperty(\"error\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check error message\", function () {\r",
+									"    var response = pm.response.json();\r",
+									"    pm.expect(response.error).to.eql(\"Missing password\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"sydney@fife\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "POST requests for success/unsuccess registration."
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://reqres.in/api/",
+			"type": "string"
+		},
+		{
+			"key": "id",
+			"value": ""
+		}
+	]
+}
