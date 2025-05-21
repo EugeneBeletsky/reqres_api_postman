@@ -3,11 +3,12 @@
     "newman": "^6.2.1"
   },
   "devDependencies": {
+    "allure-commandline": "^2.34.0",
     "newman-reporter-allure": "^3.2.2"
-  },  
+  },
   "scripts": {
     "test:api": "npx newman run postman_collection.json -e qa_env.json -r allure --reporter-allure-output=./allure-results",
-    "report:allure": "allure generate ./allure-results --output ./allure-report --clean && allure open ./allure-report"
-  
-}
+    "report:allureLocal": "allure generate ./allure-results --output ./allure-report --clean && allure open ./allure-report",
+    "report:allureCI": "npx allure generate ./allure-results --output ./allure-report --clean"
+  }
 }

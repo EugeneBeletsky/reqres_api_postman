@@ -36,5 +36,5 @@ allure open ./allure-report
 ### Run tests with scripts from package.json
 ```bash
 npm run test:api
-npm run report:allure
+npm run report:allureLocal
 ```
