@@ -1,5 +1,13 @@
 {
   "dependencies": {
     "newman": "^6.2.1"
-  }
+  },
+  "devDependencies": {
+    "newman-reporter-allure": "^3.2.2"
+  },  
+  "scripts": {
+    "test:api": "npx newman run postman_collection.json -e qa_env.json -r allure --reporter-allure-output=./allure-results",
+    "report:allure": "allure generate ./allure-results --output ./allure-report --clean && allure open ./allure-report"
+  
+}
 }
