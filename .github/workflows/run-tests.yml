@@ -27,7 +27,7 @@ jobs:
         run: npm run test:api
 
       - name: Generate Allure report
-        run: npm run report:allure
+        run: npm run report:allureCI
 
       - name: Archive Allure report
         uses: actions/upload-artifact@v4
